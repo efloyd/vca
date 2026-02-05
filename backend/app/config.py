@@ -1,5 +1,10 @@
+import os
 from pydantic_settings import BaseSettings
 from pathlib import Path
+
+# Base directory for data (use /app/data in container, ./data locally)
+BASE_DIR = Path(os.getenv("RAILWAY_ENVIRONMENT", "")).strip() and Path("/app") or Path.cwd()
+DATA_DIR = BASE_DIR / "data"
 
 
 class Settings(BaseSettings):
@@ -12,10 +17,10 @@ class Settings(BaseSettings):
     RETRIEVAL_TOP_K: int = 5
     SIMILARITY_THRESHOLD: float = 0.7
 
-    DATA_DIR: Path = Path("data")
-    CHROMA_DIR: Path = Path("data/chroma")
-    UPLOADS_DIR: Path = Path("data/uploads")
-    DATABASE_URL: str = "sqlite:///data/vca.db"
+    DATA_DIR: Path = DATA_DIR
+    CHROMA_DIR: Path = DATA_DIR / "chroma"
+    UPLOADS_DIR: Path = DATA_DIR / "uploads"
+    DATABASE_URL: str = f"sqlite:///{DATA_DIR}/vca.db"
 
     MAX_FILE_SIZE_MB: int = 50
 
