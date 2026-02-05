@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from backend.app.config import settings
 from backend.app.core.auth import verify_admin
-from backend.app.models.database import get_db, SessionLocal
+from backend.app.models.database import get_db, get_session_local
 from backend.app.models.document import Document
 from backend.app.models.schemas import DocumentResponse, DocumentListResponse
 from backend.app.dependencies import get_vectorstore_service
@@ -26,6 +26,7 @@ router = APIRouter(prefix="/documents")
 
 
 async def _process_in_background(document_id: int, file_path, vectorstore, llm):
+    SessionLocal = get_session_local()
     db = SessionLocal()
     try:
         service = DocumentService(vectorstore, llm)
