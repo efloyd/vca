@@ -24,6 +24,9 @@ class RAGService:
         # Retrieve relevant chunks
         results = self._vectorstore.query(query_embedding)
 
+        logger.info(f"Query: {user_message[:100]}...")
+        logger.info(f"Retrieved {len(results.get('documents', [[]])[0])} chunks")
+
         # Filter by similarity threshold (ChromaDB returns distances for cosine; lower = more similar)
         sources: list[SourceReference] = []
         context_parts: list[str] = []
@@ -39,6 +42,7 @@ class RAGService:
                 # Cosine distance: 0 = identical, 2 = opposite
                 # Convert to similarity: 1 - distance
                 similarity = 1 - distance
+                logger.info(f"Chunk {i}: distance={distance:.3f}, similarity={similarity:.3f}")
                 if similarity >= settings.SIMILARITY_THRESHOLD:
                     context_parts.append(
                         f"[Source: {metadata.get('document_name', 'Unknown')}]\n{doc}"
@@ -51,8 +55,11 @@ class RAGService:
                         )
                     )
 
+        logger.info(f"Chunks passing threshold ({settings.SIMILARITY_THRESHOLD}): {len(context_parts)}")
+
         # If no relevant context found, return canned response
         if not context_parts:
+            logger.warning("No chunks passed similarity threshold - returning no-context response")
             async def no_context_stream():
                 yield NO_CONTEXT_RESPONSE
 

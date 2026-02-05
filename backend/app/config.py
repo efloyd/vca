@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     CHUNK_SIZE: int = 1000
     CHUNK_OVERLAP: int = 200
     RETRIEVAL_TOP_K: int = 5
-    SIMILARITY_THRESHOLD: float = 0.7
+    SIMILARITY_THRESHOLD: float = 0.4
 
     DATA_DIR: Path = DATA_DIR
     CHROMA_DIR: Path = DATA_DIR / "chroma"
