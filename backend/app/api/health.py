@@ -11,8 +11,14 @@ from backend.app.services.vectorstore_service import VectorStoreService
 router = APIRouter()
 
 
-@router.get("/health", response_model=HealthResponse)
-def health_check(
+@router.get("/health")
+def health_check_simple():
+    """Simple health check that doesn't depend on any services."""
+    return {"status": "healthy"}
+
+
+@router.get("/health/full", response_model=HealthResponse)
+def health_check_full(
     db: Session = Depends(get_db),
     vectorstore: VectorStoreService = Depends(get_vectorstore_service),
 ):
