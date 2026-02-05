@@ -3,7 +3,8 @@ from pydantic_settings import BaseSettings
 from pathlib import Path
 
 # Base directory for data (use /app/data in container, ./data locally)
-BASE_DIR = Path(os.getenv("RAILWAY_ENVIRONMENT", "")).strip() and Path("/app") or Path.cwd()
+_in_railway = bool(os.getenv("RAILWAY_ENVIRONMENT", ""))
+BASE_DIR = Path("/app") if _in_railway else Path.cwd()
 DATA_DIR = BASE_DIR / "data"
 
 
