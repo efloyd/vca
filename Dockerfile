@@ -6,9 +6,8 @@ WORKDIR /app/frontend
 COPY frontend/package.json frontend/package-lock.json* ./
 RUN npm install
 
-# Cache bust: v2
 COPY frontend/ ./
-RUN npm run build
+RUN echo "Build v3" && npm run build
 
 # Stage 2: Python runtime
 FROM python:3.12-slim
