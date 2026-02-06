@@ -23,6 +23,15 @@ export interface DocumentInfo {
   error_message: string | null;
   created_at: string;
   updated_at: string;
+  source_type: 'file' | 'web';
+  source_url: string | null;
+  include_child_pages: boolean;
+  pages_crawled: number;
+}
+
+export interface WebResourceRequest {
+  url: string;
+  include_child_pages: boolean;
 }
 
 export interface HealthInfo {

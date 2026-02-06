@@ -29,14 +29,34 @@ const statusStyles: Record<string, string> = {
 };
 
 export function DocumentRow({ document, onDelete, onReprocess }: DocumentRowProps) {
+  const isWeb = document.source_type === 'web';
+
   return (
     <tr className="hover:bg-gray-50 transition-colors">
       <td className="px-4 py-3">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-gray-900 truncate max-w-[200px]">
-            {document.original_filename}
-          </span>
-          <span className="text-xs text-gray-400 uppercase">{document.file_type}</span>
+          {isWeb ? (
+            <svg className="w-4 h-4 text-blue-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+            </svg>
+          ) : (
+            <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          )}
+          <div className="min-w-0">
+            <span className="text-sm font-medium text-gray-900 truncate block max-w-[180px]">
+              {document.original_filename}
+            </span>
+            {isWeb && document.include_child_pages && (
+              <span className="text-xs text-gray-400">
+                {document.pages_crawled > 0 ? `${document.pages_crawled} pages` : 'crawling...'}
+              </span>
+            )}
+          </div>
+          <span className="text-xs text-gray-400 uppercase flex-shrink-0">{document.file_type}</span>
         </div>
       </td>
       <td className="px-4 py-3">

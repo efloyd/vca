@@ -1,4 +1,4 @@
-import type { DocumentInfo, SSEEvent } from '../types';
+import type { DocumentInfo, SSEEvent, WebResourceRequest } from '../types';
 
 const BASE_URL = '/api';
 
@@ -99,6 +99,23 @@ class APIClient {
       headers: this.authHeaders(),
     });
     if (!res.ok) throw new Error('Failed to reprocess document');
+    return res.json();
+  }
+
+  async addWebResource(request: WebResourceRequest): Promise<DocumentInfo> {
+    const res = await fetch(`${BASE_URL}/documents/web`, {
+      method: 'POST',
+      headers: {
+        ...this.authHeaders(),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(request),
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ detail: res.statusText }));
+      throw new Error(err.detail || 'Failed to add web resource');
+    }
     return res.json();
   }
 }

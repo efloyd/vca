@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { AdminLogin } from '../components/admin/AdminLogin';
 import { DocumentUpload } from '../components/admin/DocumentUpload';
+import { WebResourceForm } from '../components/admin/WebResourceForm';
 import { DocumentList } from '../components/admin/DocumentList';
 import { useDocuments } from '../hooks/useDocuments';
 import { apiClient } from '../api/client';
@@ -14,6 +15,7 @@ export function AdminPage() {
     uploadDocument,
     deleteDocument,
     reprocessDocument,
+    addWebResource,
   } = useDocuments(isAuthenticated);
 
   const handleLogin = useCallback((key: string) => {
@@ -53,7 +55,10 @@ export function AdminPage() {
       </div>
 
       <div className="space-y-6">
-        <DocumentUpload onUpload={handleUpload} />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <DocumentUpload onUpload={handleUpload} />
+          <WebResourceForm onSubmit={addWebResource} />
+        </div>
 
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 text-sm text-red-700">

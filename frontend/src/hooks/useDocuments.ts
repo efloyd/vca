@@ -54,6 +54,19 @@ export function useDocuments(isAuthenticated: boolean) {
     }
   }, []);
 
+  const addWebResource = useCallback(async (url: string, includeChildPages: boolean) => {
+    setError(null);
+    try {
+      const doc = await apiClient.addWebResource({ url, include_child_pages: includeChildPages });
+      setDocuments(prev => [doc, ...prev]);
+      return doc;
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to add web resource';
+      setError(message);
+      throw err;
+    }
+  }, []);
+
   // Poll for processing documents
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -76,6 +89,7 @@ export function useDocuments(isAuthenticated: boolean) {
     uploadDocument,
     deleteDocument,
     reprocessDocument,
+    addWebResource,
     refreshDocuments: fetchDocuments,
   };
 }

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, Text
+from sqlalchemy import Column, Integer, String, DateTime, Text, Boolean
 from sqlalchemy.sql import func
 
 from backend.app.models.database import Base
@@ -17,3 +17,9 @@ class Document(Base):
     error_message = Column(Text, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+    # Web resource fields
+    source_type = Column(String(20), default="file")  # "file" or "web"
+    source_url = Column(Text, nullable=True)
+    include_child_pages = Column(Boolean, default=False)
+    pages_crawled = Column(Integer, default=0)
