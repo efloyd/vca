@@ -54,11 +54,18 @@ export function AdminPage() {
         </button>
       </div>
 
-      <div className="space-y-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="space-y-8">
+        {/* Upload Document Section */}
+        <section>
+          <h2 className="text-lg font-medium text-gray-900 mb-3">Upload Document</h2>
           <DocumentUpload onUpload={handleUpload} />
+        </section>
+
+        {/* Add Web Page Section */}
+        <section>
+          <h2 className="text-lg font-medium text-gray-900 mb-3">Add Web Page</h2>
           <WebResourceForm onSubmit={addWebResource} />
-        </div>
+        </section>
 
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 text-sm text-red-700">

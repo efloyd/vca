@@ -41,8 +41,6 @@ export function WebResourceForm({ onSubmit }: WebResourceFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="bg-white border border-gray-200 rounded-xl p-4">
-      <h3 className="text-sm font-medium text-gray-700 mb-3">Add Web Page</h3>
-
       <div className="space-y-3">
         <div>
           <input
