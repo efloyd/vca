@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react';
 import { AdminLogin } from '../components/admin/AdminLogin';
-import { DocumentUpload } from '../components/admin/DocumentUpload';
-import { WebResourceForm } from '../components/admin/WebResourceForm';
+import { ContentInput } from '../components/admin/ContentInput';
 import { DocumentList } from '../components/admin/DocumentList';
 import { useDocuments } from '../hooks/useDocuments';
 import { apiClient } from '../api/client';
@@ -26,6 +25,10 @@ export function AdminPage() {
   const handleUpload = useCallback(async (file: File) => {
     await uploadDocument(file);
   }, [uploadDocument]);
+
+  const handleAddUrl = useCallback(async (url: string, includeChildPages: boolean) => {
+    await addWebResource(url, includeChildPages);
+  }, [addWebResource]);
 
   const handleLogout = useCallback(() => {
     apiClient.setAdminKey(null);
@@ -55,16 +58,10 @@ export function AdminPage() {
       </div>
 
       <div className="space-y-8">
-        {/* Upload Document Section */}
+        {/* Add Content Section */}
         <section>
-          <h2 className="text-lg font-medium text-gray-900 mb-3">Upload Document</h2>
-          <DocumentUpload onUpload={handleUpload} />
-        </section>
-
-        {/* Add Web Page Section */}
-        <section>
-          <h2 className="text-lg font-medium text-gray-900 mb-3">Add Web Page</h2>
-          <WebResourceForm onSubmit={addWebResource} />
+          <h2 className="text-lg font-medium text-gray-900 mb-3">Add Content</h2>
+          <ContentInput onUploadFile={handleUpload} onAddUrl={handleAddUrl} />
         </section>
 
         {error && (
